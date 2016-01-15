@@ -30,6 +30,21 @@ fn turn_off(core_ref : &Arc<Mutex<Core>>) -> Response {
     Response::with((status::Ok, "ok"))
 }
 
+fn red(core_ref : &Arc<Mutex<Core>>) -> Response {
+    core_ref.lock().unwrap().set_color_all(255, 0, 0);
+    Response::with((status::Ok, "ok"))
+}
+
+fn green(core_ref : &Arc<Mutex<Core>>) -> Response {
+    core_ref.lock().unwrap().set_color_all(0, 255, 0);
+    Response::with((status::Ok, "ok"))
+}
+
+fn blue(core_ref : &Arc<Mutex<Core>>) -> Response {
+    core_ref.lock().unwrap().set_color_all(0,0,255);
+    Response::with((status::Ok, "ok"))
+}
+
 fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Response> {    	
   
     let full_req_path = req.url.path.iter().fold(String::new(), |curr, next| curr + "/" + next);
