@@ -7,3 +7,6 @@ authors = [ "Blake Loring <blake_l@parsed.uk>" ]
 time = "*"
 rustc-serialize = "*"
 simplelog = { git = "https://github.com/jawline/SimpleLog.git" }
+
+[dependencies.prismatikapi]
+path = "../prismatikapi"
