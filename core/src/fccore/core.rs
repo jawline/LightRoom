@@ -3,6 +3,7 @@
 use fccore::config::Config;
 use std::thread::sleep_ms;
 use simplelog::Log;
+use prismatikapi::*;
 
 use time;
 
@@ -15,6 +16,8 @@ pub struct Core {
      * Is the core alive
      */
     pub alive: bool,
+
+    prismatik: Prismatik,
   
     /**
      * configuration for the core
@@ -33,6 +36,7 @@ impl Core {
         let config = Config::load(config_file);
         let mut core = Core {
             alive: true,
+            prismatik: Prismatik::new(&config.server_url, &config.api_key),
             log: Log::new(&format!("{}log{}", LOG_DIR, time::now().to_timespec().sec), config.log_config.log_limit),
             config: config
         };
