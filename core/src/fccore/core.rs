@@ -56,6 +56,11 @@ impl Core {
         self.log.add(TAG, &("Set ON to ".to_string() + &on.to_string()));
     }
 
+    pub fn set_color_all(&mut self, r: usize, g: usize, b: usize) {
+        //self.prismatik.set_all_lights(r,g,b);
+        self.log.add(TAG, &("Set color to ".to_string() + &r.to_string() + ", " + &g.to_string() + ", " + &b.to_string()));
+    }
+
     pub fn update(&mut self) {}
 
     /**
