@@ -63,6 +63,12 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 		}
 	}
 
+	rest.white = function(cb) {
+		$http.get(API_URL + "/white").success(function(data) {
+			cb(data);
+		});
+	}
+
 	rest.red = function(cb) {
 		$http.get(API_URL + "/red").success(function(data) {
 			cb(data);

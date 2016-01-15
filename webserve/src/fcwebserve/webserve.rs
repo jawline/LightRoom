@@ -30,6 +30,11 @@ fn turn_off(core_ref : &Arc<Mutex<Core>>) -> Response {
     Response::with((status::Ok, "ok"))
 }
 
+fn white(core_ref : &Arc<Mutex<Core>>) -> Response {
+    core_ref.lock().unwrap().set_color_all(255, 255, 255);
+    Response::with((status::Ok, "ok"))
+}
+
 fn red(core_ref : &Arc<Mutex<Core>>) -> Response {
     core_ref.lock().unwrap().set_color_all(255, 0, 0);
     Response::with((status::Ok, "ok"))
@@ -59,6 +64,7 @@ fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Resp
          "config" => get_config(core),
          "on" => turn_on(core),
          "off" => turn_off(core),
+         "white" => white(core),
          "red" => red(core),
          "green" => green(core),
          "blue" => blue(core),

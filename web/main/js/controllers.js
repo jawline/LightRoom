@@ -22,6 +22,22 @@ function StatusCtrl($scope, $restService) {
 		}
 	}
 
+	$scope.white = function() {
+		$restService.white();
+	}
+
+	$scope.red = function() {
+		$restService.red();
+	}
+
+	$scope.green = function() {
+		$restService.green();
+	}
+	
+	$scope.blue = function() {
+		$restService.blue();
+	}
+
 	$scope.countdown = function() {
 		$scope.rest.countdown();
 	}
