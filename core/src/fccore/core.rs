@@ -17,6 +17,8 @@ pub struct Core {
      */
     pub alive: bool,
 
+    pub on: bool,
+
     //prismatik: Prismatik,
   
     /**
@@ -36,6 +38,7 @@ impl Core {
         let config = Config::load(config_file);
         let mut core = Core {
             alive: true,
+            on: false,
         //    prismatik: Prismatik::new(&config.server_url, &config.api_key),
             log: Log::new(&format!("{}log{}", LOG_DIR, time::now().to_timespec().sec), config.log_config.log_limit),
             config: config
@@ -43,7 +46,13 @@ impl Core {
         //core.prismatik.set_brightness(75);
         //core.prismatik.set_smooth(150);
         //core.prismatik.set_all_lights(200, 0, 0);
+        core.set_on(false);
         core
+    }
+
+    pub fn set_on(&mut self, on: bool) {
+        self.on = on;
+        //core.prismatik.set_on(on)
     }
 
     pub fn update(&mut self) {}

@@ -9,14 +9,16 @@ use iron::mime::Mime;
 
 #[derive(RustcEncodable)]
 struct Status {
-    pub alive: bool
+    pub alive: bool,
+    pub on: bool
 }
 
 impl Status {
 
     pub fn from(core: &MutexGuard<Core>) -> Status {
         Status{
-            alive: core.alive
+            alive: core.alive,
+            on: core.on
         }
     }
 }
