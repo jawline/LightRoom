@@ -37,4 +37,11 @@ impl Prismatik {
 		let color_string = "setcolor:".to_string() + &id.to_string() + "-" + &r.to_string() + "," + &g.to_string() + "," + &b.to_string() + ";";
 		self.stream.write(&color_string.into_bytes());
 	}
+
+	pub fn set_all_lights(&mut self, r: usize, g: usize, b: usize) {
+		let count = self.light_count();
+		for id in 0..count {
+			self.set_color(id, r, g, b);
+		}
+	}
 }
