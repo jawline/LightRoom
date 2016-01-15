@@ -20,6 +20,16 @@ fn unknown(core_ref : &Arc<Mutex<Core>>) -> Response {
     Response::with((status::NotFound, "unknown command"))
 }
 
+fn turn_on(core_ref : &Arc<Mutex<Core>>) -> Response {
+    core_ref.lock().unwrap().set_on(true);
+    Response::with((status::Ok, "ok"))
+}
+
+fn turn_off(core_ref : &Arc<Mutex<Core>>) -> Response {
+    core_ref.lock().unwrap().set_on(false);
+    Response::with((status::Ok, "ok"))
+}
+
 fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Response> {    	
   
     let full_req_path = req.url.path.iter().fold(String::new(), |curr, next| curr + "/" + next);
@@ -32,7 +42,9 @@ fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Resp
          "log_reduced" => get_log_min(core),
          "kill" => kill_core(core),
          "config" => get_config(core),
-         "status" | _ => status_report(core)
+         "on" => turn_on(core),
+         "off" => turn_off(core),
+         "status" | _ => status_report(core),
         };
 
         response.headers.set(AccessControlAllowOrigin::Any);

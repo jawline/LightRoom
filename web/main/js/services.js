@@ -13,8 +13,6 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 	function reloadStatus() {
 		$http.get(API_URL + "/status").success(function(data) {
 			rest.status = data;
-			rest.armed_text = rest.status.armed ? "Armed" : "Disarmed";
-			rest.countdown_btn_text = rest.status.is_counting_down ? "End Countdown" : "Begin Countdown";
 			rest.live_text = "Live (Updating)";
 		}).then(function() {
 			setTimeout(reloadStatus, 100);
@@ -65,14 +63,14 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 		}
 	}
 
-	rest.arm = function(cb) {
-		$http.get(API_URL + "/arm").success(function(data) {
+	rest.turn_on = function(cb) {
+		$http.get(API_URL + "/on").success(function(data) {
 			cb(data);
 		});
 	}
 
-	rest.disarm = function(cb) {
-		$http.get(API_URL + "/disarm").success(function(data) {
+	rest.turn_off = function(cb) {
+		$http.get(API_URL + "/off").success(function(data) {
 			cb(data);
 		});
 	}
