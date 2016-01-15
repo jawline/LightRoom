@@ -14,15 +14,11 @@ function StatusCtrl($scope, $restService) {
 	$scope.rest = $restService;
 	$scope.api_url = API_URL;
 
-	$scope.arm = function() {
-		if ($scope.rest.status.armed) {
-			$restService.disarm(function(data) {
-				$scope.arm_result = data;
-			});
+	$scope.togglelighting = function() {
+		if ($scope.rest.status.on) {
+			$restService.turn_off();
 		} else {
-			$restService.arm(function(data) {
-				$scope.arm_result = data;
-			});
+			$restService.turn_on();
 		}
 	}
 

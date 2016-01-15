@@ -4,17 +4,14 @@
 		<h2>LightRoom - {{rest.live_text}} (Alive: {{rest.status.alive}})</h2>
       	<hr class="featurette-divider">
 
-      	<hr class="featurette-divider">
-
-      	<hr class="featurette-divider">
-		<div class="row"><b class="col-xs-12" style="text-align: center;">{{rest.armed_text}}</b></div>
-      	<hr class="featurette-divider">
-
       	<div class="row">
 			<div class="col-xs-12 center-block">
-	      		<button class="btn btn-success center-block" style="width: 300px;" ng-click="arm();">Toggle ARM</button>
+	      		<button class="btn btn-success center-block" style="width: 300px;" ng-click="togglelighting();">Toggle Lighting</button>
 	      	</div>
       	</div>
+
+      	<hr class="featurette-divider">
+		<div class="row"><b class="col-xs-12" style="text-align: center;">On: {{rest.on}}</b></div>
 
 		<hr class="featurette-divider">
 		<b>Reduced Log</b>

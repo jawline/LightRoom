@@ -53,6 +53,7 @@ impl Core {
     pub fn set_on(&mut self, on: bool) {
         self.on = on;
         //core.prismatik.set_on(on)
+        self.log.add(TAG, &("Set ON to ".to_string() + &on.to_string()));
     }
 
     pub fn update(&mut self) {}
