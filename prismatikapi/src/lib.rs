@@ -38,6 +38,11 @@ impl Prismatik {
 		self.stream.write(&color_string.into_bytes());
 	}
 
+	pub fn set_on(&mut self, on: bool) {
+		let status_string = "setstatus:".to_string() + if on { "on" } else { "off" };
+		self.stream.write(&status_string.into_bytes());
+	}
+
 	pub fn set_all_lights(&mut self, r: usize, g: usize, b: usize) {
 		let count = self.light_count();
 		for id in 0..count {
