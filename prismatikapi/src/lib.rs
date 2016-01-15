@@ -14,8 +14,17 @@ impl Prismatik {
 		prism
 	}
 
+	pub fn light_count(&mut self) -> usize {
+		100
+	}
+
 	pub fn send_key(&mut self, key: &str) {
 		let key_string = "apikey:{".to_string() + key + "}";
 		self.stream.write(&key_string.into_bytes());
+	}
+
+	pub fn set_brightness(&mut self, level: usize) {
+		let brightness_string = "setbrightness:".to_string() + &level.to_string();
+		self.stream.write(&brightness_string.into_bytes());
 	}
 }
