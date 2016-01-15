@@ -1,5 +1,6 @@
 use iron::prelude::*;
 use iron::status;
+use iron::Url;
 use std::path::Path;
 use staticfile::Static;
 use mount::Mount;
@@ -47,6 +48,23 @@ fn green(core_ref : &Arc<Mutex<Core>>) -> Response {
 
 fn blue(core_ref : &Arc<Mutex<Core>>) -> Response {
     core_ref.lock().unwrap().set_color_all(0,0,255);
+    Response::with((status::Ok, "ok"))
+}
+
+fn find(name: &str, url: &Url) -> Option<String> {
+    let pairs = url.clone().into_generic_url().query_pairs();
+
+    if pairs.is_some() {
+        match pairs.unwrap().iter().find(|&&(ref pname, ref val)| name == pname) {
+            Some(&(_, ref val)) => Some(val.to_string()),
+            _ => None
+        }
+    } else {
+        None
+    }
+}
+
+fn color(core_ref: &Arc<Mutex<Core>>, req: &Request) -> Response {
     Response::with((status::Ok, "ok"))
 }
 
