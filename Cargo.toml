@@ -1,4 +1,10 @@
 [package]
 name = "RustPrismatik"
-version = "0.1.0"
-authors = ["Blake Loring <blake_l@parsed.uk>"]
+version = "0.0.1"
+authors = [ "Blake Loring <blake_l@parsed.uk>" ]
+
+[dependencies.fccore]
+path = "core"
+
+[dependencies.fcwebserve]
+path = "webserve"

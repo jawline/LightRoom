@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" ng-app="imcluelessSite">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="./dist/css/bootstrap.css" rel="stylesheet">
+    <link href="css/site.css" rel="stylesheet">
+    <link href="css/header.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <title>Launchpad</title>
+</head>
+
+<body class="page-background">
+	<div id="site-wrapper">
+	   <div style="width: 100%;" data-ng-view id="ng-view"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/directives.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#navbar-clickable').click(function() {
+                if ($('#navbar-icon').hasClass('glyphicon-chevron-down')) {
+                    $('#navbar-icon').removeClass('glyphicon-chevron-down');
+                    $('#navbar-icon').addClass('glyphicon-chevron-up');
+                } else if ($('#navbar-icon').hasClass('glyphicon-chevron-up')) {
+                    $('#navbar-icon').removeClass('glyphicon-chevron-up');
+                    $('#navbar-icon').addClass('glyphicon-chevron-down');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

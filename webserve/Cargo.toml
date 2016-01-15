@@ -1,0 +1,16 @@
+[package]
+name = "fcwebserve"
+version = "0.0.1"
+authors = [ "Blake Loring <blake_l@parsed.uk>" ]
+
+[dependencies]
+simplelog = { git = "https://github.com/jawline/SimpleLog.git" }
+rustc-serialize = "*"
+staticfile = "*"
+mount = "*"
+time = "*"
+hyper = "*"
+iron = "*"
+
+[dependencies.fccore]
+path = "../core/"

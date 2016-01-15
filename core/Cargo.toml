@@ -1,0 +1,9 @@
+[package]
+name = "fccore"
+version = "0.0.1"
+authors = [ "Blake Loring <blake_l@parsed.uk>" ]
+
+[dependencies]
+time = "*"
+rustc-serialize = "*"
+simplelog = { git = "https://github.com/jawline/SimpleLog.git" }
