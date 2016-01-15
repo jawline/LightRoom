@@ -32,4 +32,9 @@ impl Prismatik {
 		let smooth_string = "setsmooth:".to_string() + &level.to_string();
 		self.stream.write(&smooth_string.into_bytes());
 	}
+
+	pub fn set_color(&mut self, id: usize, r: usize, g: usize, b:usize) {
+		let color_string = "setcolor:".to_string() + &id.to_string() + "-" + &r.to_string() + "," + &g.to_string() + "," + &b.to_string() + ";";
+		self.stream.write(&color_string.into_bytes());
+	}
 }
