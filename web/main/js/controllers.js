@@ -38,6 +38,13 @@ function StatusCtrl($scope, $restService) {
 		$restService.blue();
 	}
 
+	$scope.commit = function() {
+		var rv = $scope.rv || 0;
+		var gv = $scope.gv || 0;
+		var bv = $scope.bv || 0;
+		console.log(rv + ', ' + gv + ', ' + bv);
+	}
+
 	$scope.countdown = function() {
 		$scope.rest.countdown();
 	}
