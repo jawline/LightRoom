@@ -1,3 +1,3 @@
-#Rust Prismatik
+#LightRoom
 
-A Rust API to interface with Prismatik
+A Rust program to allow changes to LightPaks used for lighting via a web API

@@ -1,5 +1,5 @@
 [package]
-name = "RustPrismatik"
+name = "light_room"
 version = "0.0.1"
 authors = [ "Blake Loring <blake_l@parsed.uk>" ]
 
