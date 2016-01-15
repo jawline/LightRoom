@@ -42,7 +42,18 @@ function StatusCtrl($scope, $restService) {
 		var rv = $scope.rv || 0;
 		var gv = $scope.gv || 0;
 		var bv = $scope.bv || 0;
+		if (rv < 0) { rv = 0; }
+		if (gv < 0) { gv = 0; }
+		if (bv < 0) { bv = 0; }
+		if (rv > 255) { rv = 255; }
+		if (gv > 255) { gv = 255; }
+		if (bv > 255) { bv = 255; }
 		console.log(rv + ', ' + gv + ', ' + bv);
+		$restService.color(rv,gv,bv, function() {
+			$scope.rv = rv;
+			$scope.gv = gv;
+			$scope.bv = bv;
+		});
 	}
 
 	$scope.countdown = function() {

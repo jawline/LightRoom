@@ -87,6 +87,12 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 		});
 	}
 
+	rest.color = function(r,g,b,cb) {
+		$http.get(API_URL + "/color?r="+r + "&g=" + g + "&b=" + b).success(function(data) {
+			cb(data);
+		});
+	}
+
 	rest.turn_on = function(cb) {
 		$http.get(API_URL + "/on").success(function(data) {
 			cb(data);
