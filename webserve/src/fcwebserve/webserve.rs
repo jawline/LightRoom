@@ -59,6 +59,9 @@ fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Resp
          "config" => get_config(core),
          "on" => turn_on(core),
          "off" => turn_off(core),
+         "red" => red(core),
+         "green" => green(core),
+         "blue" => blue(core),
          "status" | _ => status_report(core),
         };
 
