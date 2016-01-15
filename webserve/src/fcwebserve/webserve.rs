@@ -96,6 +96,7 @@ fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Resp
          "red" => red(core),
          "green" => green(core),
          "blue" => blue(core),
+         "color" => color(core, req),
          "status" | _ => status_report(core),
         };
 
