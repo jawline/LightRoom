@@ -27,4 +27,9 @@ impl Prismatik {
 		let brightness_string = "setbrightness:".to_string() + &level.to_string();
 		self.stream.write(&brightness_string.into_bytes());
 	}
+
+	pub fn set_smooth(&mut self, level: usize) {
+		let smooth_string = "setsmooth:".to_string() + &level.to_string();
+		self.stream.write(&smooth_string.into_bytes());
+	}
 }
