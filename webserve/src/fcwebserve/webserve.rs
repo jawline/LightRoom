@@ -6,6 +6,7 @@ use staticfile::Static;
 use mount::Mount;
 use fccore::Core;
 use std::thread;
+use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use hyper::header::AccessControlAllowOrigin;
 use fcwebserve::config::Config;
@@ -64,7 +65,16 @@ fn find(name: &str, url: &Url) -> Option<String> {
     }
 }
 
+//Find color from query string or return 0
+fn find_color(name: &str, url: &Url) -> usize {
+    match find(name, url) {
+        Some(val) => usize::from_str(&val).unwrap_or(0),
+        _ => 0
+    }
+}
+
 fn color(core_ref: &Arc<Mutex<Core>>, req: &Request) -> Response {
+    core_ref.lock().unwrap().set_color_all(find_color("r", &req.url), find_color("g", &req.url), find_color("b", &req.url));
     Response::with((status::Ok, "ok"))
 }
 
