@@ -10,7 +10,8 @@ use iron::mime::Mime;
 #[derive(RustcEncodable)]
 struct Status {
     pub alive: bool,
-    pub on: bool
+    pub on: bool,
+    pub brightness: usize
 }
 
 impl Status {
@@ -18,7 +19,8 @@ impl Status {
     pub fn from(core: &MutexGuard<Core>) -> Status {
         Status{
             alive: core.alive,
-            on: core.on
+            on: core.on,
+            brightness: core.brightness
         }
     }
 }

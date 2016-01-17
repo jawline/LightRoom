@@ -4,15 +4,19 @@
 		<h2 class="row-centered">LightRoom - {{rest.live_text}}</h2>
       	<hr class="featurette-divider">
 
-      	<div class="row">
-			<div class="col-xs-12 center-block">
-	      		<button class="btn btn-success center-block" style="width: 300px;" ng-click="togglelighting();">Toggle Lighting</button>
-	      	</div>
+      	<div class="row row-centered">
+	      		<button class="btn btn-success col-xs-10 col-centered" ng-click="togglelighting();">{{rest.toggle_text}}</button>
       	</div>
 
       	<hr class="featurette-divider">
-		<div class="row"><b class="col-xs-12" style="text-align: center;">On: {{rest.status.on}}</b></div>
 
+      	<div class="row">
+      		<b class="col-xs-12" style="text-align: center;">Brightness</b>
+      	</div>
+
+      	<div class="row row-centered">
+      		<input class="col-centered" style="width: 80%;" id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/>
+      	</div>
 
       	<hr class="featurette-divider">
 
@@ -20,15 +24,11 @@
       		<b class="col-xs-12" style="text-align: center;">Colour Presets</b>
       	</div>
 
-      	<div style="margin-top: 15px;" class="row">
-			<div class="col-xs-12 center-block">
-	      		<div class="btn center-block">
-	      			<button class="btn btn-default" style="width: 100px;" ng-click="white();">White</button>
-	      			<button class="btn btn-default" style="width: 100px;" ng-click="red();">Red</button>
-	      			<button class="btn btn-default" style="width: 100px;" ng-click="green();">Green</button>
-	      			<button class="btn btn-default" style="width: 100px;" ng-click="blue();">Blue</button>
-	      		</div>
-	      	</div>
+      	<div style="margin-top: 15px;" class="row row-centered">
+	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="white();">White</button>
+	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="red();">Red</button>
+	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="green();">Green</button>
+	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="blue();">Blue</button>
       	</div>
 
       	<hr class="featurette-divider">
@@ -60,12 +60,8 @@
 			</div>
       	</div>
 
-      	<div style="margin-top: 15px;" class="row">
-			<div class="col-xs-12 center-block">
-	      		<div class="btn center-block">
-	      			<button class="btn btn-danger" style="width: 300px;" ng-click="commit();">Commit</button>
-	      		</div>
-	      	</div>
+      	<div style="margin-top: 15px;" class="row row-centered">
+	      	<button class="btn btn-danger col-xs-10 col-centered" ng-click="commit();">Commit</button>
       	</div>
 
 		<hr class="featurette-divider">

@@ -14,6 +14,21 @@ function StatusCtrl($scope, $restService) {
 	$scope.rest = $restService;
 	$scope.api_url = API_URL;
 
+	$restService.doOnce(function(data) {
+		// Without JQuery
+		var slider = new Slider('#ex1', {
+			formatter: function(value) {
+				return 'Current value: ' + value;
+			}
+		});
+
+		slider.setValue($restService.status.brightness);
+
+		slider.on('slide', function(v) {
+			$restService.setBrightness(v);
+		});
+	});
+
 	$scope.togglelighting = function() {
 		if ($scope.rest.status.on) {
 			$restService.turn_off();

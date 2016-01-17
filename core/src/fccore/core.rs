@@ -18,6 +18,7 @@ pub struct Core {
     pub alive: bool,
 
     pub on: bool,
+    pub brightness: usize,
 
     prismatik: Prismatik,
   
@@ -38,6 +39,7 @@ impl Core {
         let config = Config::load(config_file);
         let mut core = Core {
             alive: true,
+            brightness: 100,
             on: false,
             prismatik: Prismatik::new(&config.server_url, &config.api_key),
             log: Log::new(&format!("{}log{}", LOG_DIR, time::now().to_timespec().sec), config.log_config.log_limit),
@@ -60,6 +62,12 @@ impl Core {
     pub fn set_color_all(&mut self, r: usize, g: usize, b: usize) {
         self.prismatik.set_all_lights(r,g,b);
         self.log.add(TAG, &("Set color to ".to_string() + &r.to_string() + ", " + &g.to_string() + ", " + &b.to_string()));
+    }
+
+    pub fn set_brightness(&mut self, b: usize) {
+        self.brightness = b;
+        self.prismatik.set_brightness(b);
+        self.log.add(TAG, &format!("Set brightness to {}", b));
     }
 
     pub fn update(&mut self) {}

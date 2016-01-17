@@ -52,6 +52,11 @@ fn blue(core_ref : &Arc<Mutex<Core>>) -> Response {
     Response::with((status::Ok, "ok"))
 }
 
+fn brightness(core_ref : &Arc<Mutex<Core>>, req: &Request) -> Response {
+    core_ref.lock().unwrap().set_brightness(find_color("brightness", &req.url));
+    Response::with((status::Ok, "ok"))
+}
+
 fn find(name: &str, url: &Url) -> Option<String> {
     let pairs = url.clone().into_generic_url().query_pairs();
 
@@ -97,6 +102,7 @@ fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Resp
          "green" => green(core),
          "blue" => blue(core),
          "color" => color(core, req),
+         "brightness" => brightness(core, req),
          "status" | _ => status_report(core),
         };
 
