@@ -13,10 +13,42 @@ function CommandsCtrl($scope, $restService) {
 function StatusCtrl($scope, $restService) {
 	$scope.rest = $restService;
 	$scope.api_url = API_URL;
+	$scope.rv = 0;
+	$scope.gv = 0;
+	$scope.bv = 0;
 
 	var bright, r, g, b;
 	var trustServer = true;
 	var deferred = false;
+
+
+	function sr() {
+		r.setValue($restService.status.r);
+		$scope.rv = $restService.status.r;
+	}
+
+	function sg() {
+		g.setValue($restService.status.g);
+		$scope.gv = $restService.status.g;
+	}
+
+	function sb() {
+		b.setValue($restService.status.b);
+		$scope.bv = $restService.status.b;
+	}
+
+	function rebright() {
+		bright.setValue($restService.status.brightness);
+		$scope.bl = $restService.status.brightness;
+	}
+
+	function rp() {
+		rebright();
+		sr();
+		sg();
+		sb();
+	}
+
 
 	$restService.doOnce(function(data) {
 		// Without JQuery
@@ -73,56 +105,21 @@ function StatusCtrl($scope, $restService) {
 		$scope.bv = $restService.status.b;
 
 		bright = slider;
+		rp();
 	});
-
-	function sr() {
-		if ($scope.rv != $restService.status.r) {
-			r.setValue($restService.status.r);
-			$scope.rv = $restService.status.r;
-		}
-	}
-
-	function sg() {
-		if ($scope.gv != $restService.status.g) {
-			g.setValue($restService.status.g);
-			$scope.gv = $restService.status.g;
-		}
-	}
-
-	function sb() {
-		if ($scope.bv != $restService.status.b) {
-			b.setValue($restService.status.b);
-			$scope.bv = $restService.status.b;
-		}
-	}
-
-	function rebright() {
-		if ($scope.bl) {
-			bright.setValue($restService.status.brightness);
-			$scope.bl = $restService.status.brightness;
-		}
-	}
-
-	function rp() {
-		rebright();
-		sr();
-		sg();
-		sb();
-	}
 
 	function reloop() {
 
 		if (!trustServer) {
+			console.log('Dont trust server');
 			deferred = true;
 		}
 
 		if (!deferred) {
-			rebright();
+			rp();
 		}
 
-		if (trustServer) {
-			deferred = false;
-		}
+		deferred = false;
 	}
 
 	$restService.repeat(reloop);
@@ -151,6 +148,8 @@ function StatusCtrl($scope, $restService) {
 		$restService.blue();
 	}
 
+	var lR, lG, lB;
+
 	$scope.commit = function() {
 		var rv = $scope.rv || 0;
 		var gv = $scope.gv || 0;
@@ -163,12 +162,18 @@ function StatusCtrl($scope, $restService) {
 		if (bv > 255) { bv = 255; }
 		trustServer = false;
 		console.log(rv + ', ' + gv + ', ' + bv);
+		lR = rv;
+		lG = gv;
+		lB = bv;
 		$restService.color(rv,gv,bv, function() {
 			$restService.status.r = rv;
 			$restService.status.g = gv;
 			$restService.status.b = bv;
-			rp();
-			trustServer = true;
+
+			if (lR === rv && lG === gv && lB === bv) {
+				rp();
+				trustServer = true;
+			}
 		});
 	}
 }
