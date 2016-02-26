@@ -53,6 +53,8 @@ function StatusCtrl($scope, $restService) {
 	$restService.doOnce(function(data) {
 		// Without JQuery
 		var slider = new Slider('#ex1', {
+			min: 0,
+			max: 255,
 			formatter: function(value) {
 				return 'Current value: ' + value;
 			}
