@@ -16,6 +16,7 @@ function StatusCtrl($scope, $restService) {
 
 	var bright, r, g, b;
 	var trustServer = true;
+	var deferred = false;
 
 	$restService.doOnce(function(data) {
 		// Without JQuery
@@ -74,26 +75,53 @@ function StatusCtrl($scope, $restService) {
 		bright = slider;
 	});
 
+	function sr() {
+		if ($scope.rv != $restService.status.r) {
+			r.setValue($restService.status.r);
+			$scope.rv = $restService.status.r;
+		}
+	}
+
+	function sg() {
+		if ($scope.gv != $restService.status.g) {
+			g.setValue($restService.status.g);
+			$scope.gv = $restService.status.g;
+		}
+	}
+
+	function sb() {
+		if ($scope.bv != $restService.status.b) {
+			b.setValue($restService.status.b);
+			$scope.bv = $restService.status.b;
+		}
+	}
+
+	function rebright() {
+		if ($scope.bl) {
+			bright.setValue($restService.status.brightness);
+			$scope.bl = $restService.status.brightness;
+		}
+	}
+
+	function rp() {
+		rebright();
+		sr();
+		sg();
+		sb();
+	}
+
 	function reloop() {
+
+		if (!trustServer) {
+			deferred = true;
+		}
+
+		if (!deferred) {
+			rebright();
+		}
+
 		if (trustServer) {
-
-			if ($scope.bl) {
-				bright.setValue($restService.status.brightness);
-				$scope.bl = $restService.status.brightness;
-			}
-
-			if ($scope.rv != $restService.status.r) {
-				r.setValue($restService.status.r);
-				$scope.rv = $restService.status.r;
-			}
-			if ($scope.gv != $restService.status.g) {
-				g.setValue($restService.status.g);
-				$scope.gv = $restService.status.g;
-			}
-			if ($scope.bv != $restService.status.b) {
-				b.setValue($restService.status.b);
-				$scope.bv = $restService.status.b;
-			}
+			deferred = false;
 		}
 	}
 
@@ -136,31 +164,13 @@ function StatusCtrl($scope, $restService) {
 		trustServer = false;
 		console.log(rv + ', ' + gv + ', ' + bv);
 		$restService.color(rv,gv,bv, function() {
-			$scope.rv = rv;
-			$scope.gv = gv;
-			$scope.bv = bv;
+			$restService.status.r = rv;
+			$restService.status.g = gv;
+			$restService.status.b = bv;
+			rp();
 			trustServer = true;
 		});
 	}
-
-	$scope.countdown = function() {
-		$scope.rest.countdown();
-	}
-
-	$scope.disarm = function() {
-		$restService.disarm(function(data) {
-			$scope.arm_result = data;
-		});
-	}
-
-	$scope.motor_test = function() {
-		$restService.motor_test(function(data) {
-			$scope.motor_result = data;
-		});
-	}
-
-	$scope.arm_result = "Empty";
-	$scope.motor_result = "Empty";
 }
 
 function LogsCtrl($scope, $restService) {
