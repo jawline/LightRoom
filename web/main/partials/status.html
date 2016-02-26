@@ -25,10 +25,10 @@
       	</div>
 
       	<div style="margin-top: 15px;" class="row row-centered">
-	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="white();">White</button>
-	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="red();">Red</button>
-	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="green();">Green</button>
-	      			<button class="btn btn-default col-xs-2 col-centered" ng-click="blue();">Blue</button>
+	            <button class="btn btn-default col-xs-2 col-centered" ng-click="white();">White</button>
+	            <button class="btn btn-default col-xs-2 col-centered" ng-click="red();">Red</button>
+	      	<button class="btn btn-default col-xs-2 col-centered" ng-click="green();">Green</button>
+	      	<button class="btn btn-default col-xs-2 col-centered" ng-click="blue();">Blue</button>
       	</div>
 
       	<hr class="featurette-divider">
@@ -38,26 +38,11 @@
       	</div>
 
       	<div style="margin-top: 15px;" class="row row-centered">
-      		<div class="col-xs-3 col-centered">
-				<div class="input-group" style="">
-				  <span class="input-group-addon" id="basic-addon1">R</span>
-				  <input ng-model="rv" type="text" class="form-control" placeholder="0" aria-describedby="basic-addon1">
-				</div>
-			</div>
+                  <div>Red</div> <input class="col-centered" style="width: 80%;" id="r" data-slider-id='rSlider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/><br/>
 
-      		<div class="col-xs-3 col-centered">
-				<div class="input-group" style="margin-left: 5px;">
-				  <span class="input-group-addon" id="basic-addon1">G</span>
-				  <input ng-model="gv" type="text" class="form-control" placeholder="0" aria-describedby="basic-addon1">
-				</div>
-			</div>
+                  <div>Green</div> <input class="col-centered" style="width: 80%;" id="g" data-slider-id='gSlider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/><br/>
 
-      		<div class="col-xs-3 col-centered">
-				<div class="input-group" style="margin-left: 5px;">
-				  <span class="input-group-addon" id="basic-addon1">B</span>
-				  <input ng-model="bv" type="text" class="form-control" placeholder="0" aria-describedby="basic-addon1">
-				</div>
-			</div>
+                  <div>Blue</div> <input class="col-centered" style="width: 80%;" id="b" data-slider-id='bSlider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/>
       	</div>
 
       	<div style="margin-top: 15px;" class="row row-centered">

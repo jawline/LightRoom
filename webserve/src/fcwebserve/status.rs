@@ -11,16 +11,21 @@ use iron::mime::Mime;
 struct Status {
     pub alive: bool,
     pub on: bool,
-    pub brightness: usize
+    pub brightness: usize,
+    pub r: usize,
+    pub g: usize,
+    pub b: usize
 }
 
 impl Status {
-
     pub fn from(core: &MutexGuard<Core>) -> Status {
         Status{
             alive: core.alive,
             on: core.on,
-            brightness: core.brightness
+            brightness: core.brightness,
+            r: core.r,
+            g: core.g,
+            b: core.b
         }
     }
 }

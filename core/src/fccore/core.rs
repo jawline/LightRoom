@@ -30,25 +30,34 @@ pub struct Core {
     /**
      * Core log, stores log messages and timestamps
      */
-    log: Log
+    log: Log,
+
+    pub r: usize,
+    pub g: usize,
+    pub b: usize
 }
 
 impl Core {
 
     pub fn new(config_file : &str) -> Core {
         let config = Config::load(config_file);
+        
         let mut core = Core {
             alive: true,
             brightness: 100,
             on: false,
             prismatik: Prismatik::new(&config.server_url, &config.api_key),
             log: Log::new(&format!("{}log{}", LOG_DIR, time::now().to_timespec().sec), config.log_config.log_limit),
-            config: config
+            config: config,
+            r: 0,
+            g: 0,
+            b: 0
         };
+
         core.log.add(TAG, &format!("Connecting to server {} with key {}", &core.config.server_url, &core.config.api_key));
         core.prismatik.set_brightness(75);
         core.prismatik.set_smooth(150);
-        core.prismatik.set_all_lights(200, 0, 0);
+        core.prismatik.set_all_lights(0, 0, 0);
         core.set_on(false);
         core
     }
@@ -60,6 +69,9 @@ impl Core {
     }
 
     pub fn set_color_all(&mut self, r: usize, g: usize, b: usize) {
+        self.r = r;
+        self.g = g;
+        self.b = b;
         self.prismatik.set_all_lights(r,g,b);
         self.log.add(TAG, &("Set color to ".to_string() + &r.to_string() + ", " + &g.to_string() + ", " + &b.to_string()));
     }

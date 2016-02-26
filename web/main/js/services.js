@@ -11,6 +11,7 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 	rest.live_text = "Not Live Yet (Making Initial Request)";
 
 	var doOnceList = [];
+	var repeatList = [];
 
 	function reloadStatus() {
 		$http.get(API_URL + "/status").success(function(data) {
@@ -20,6 +21,11 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 			doOnceList.forEach(function(fn) {
 				fn(data);
 			});
+
+			repeatList.forEach(function(fn) {
+				fn(data);
+			});
+
 			doOnceList.length = 0;
 		}).then(function() {
 			setTimeout(reloadStatus, 100);
@@ -60,6 +66,10 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 
 	rest.doOnce = function(cb) {
 		doOnceList.push(cb);
+	}
+
+	rest.repeat = function(cb) {
+		repeatList.push(cb);
 	}
 
 	rest.countdown = function(cb) {
@@ -104,7 +114,7 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 		});
 	}
 
-	rest.setBrightness = function(bl) {
+	rest.setBrightness = function(bl, cb) {
 		$http.get(API_URL + "/brightness?brightness=" + bl).success(function(data) {
 			cb(data);
 		});
