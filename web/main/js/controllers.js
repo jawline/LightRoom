@@ -67,18 +67,24 @@ function StatusCtrl($scope, $restService) {
 		});
 
 		r = new Slider('#r', {
+			min: 0,
+			max: 255,
 			formatter: function(value) {
 				return 'Red: ' + value;
 			}
 		});
 
 		g = new Slider('#g', {
+			min: 0,
+			max: 255,
 			formatter: function(value) {
 				return 'Green: ' + value;
 			}
 		});
 
 		b = new Slider('#b', {
+			min: 0,
+			max: 255,
 			formatter: function(value) {
 				return 'Blue: ' + value;
 			}
