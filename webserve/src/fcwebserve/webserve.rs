@@ -8,7 +8,7 @@ use fccore::Core;
 use std::thread;
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
-use hyper::header::AccessControlAllowOrigin;
+use hyper::header::{Headers, AccessControlAllowOrigin};
 use fcwebserve::config::Config;
 use fcwebserve::core_config::get_config;
 use fcwebserve::status::status_report;
