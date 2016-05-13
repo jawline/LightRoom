@@ -106,7 +106,7 @@ fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Resp
          "status" | _ => status_report(core),
         };
 
-        response.headers.set(AccessControlAllowOrigin::Any);
+        response.headers.set(hyper::header::AccessControlAllowOrigin::Any);
         response
     } else {
         unknown(core)
