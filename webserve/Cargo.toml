@@ -9,7 +9,7 @@ rustc-serialize = "*"
 staticfile = "*"
 mount = "*"
 time = "*"
-hyper = "*"
+hyper = "0.8.1"
 iron = "*"
 
 [dependencies.fccore]
