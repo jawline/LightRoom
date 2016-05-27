@@ -18,9 +18,6 @@ function StatusCtrl($scope, $restService) {
 	$scope.bv = 0;
 
 	var bright, r, g, b;
-	var trustServer = true;
-	var deferred = false;
-
 
 	function sr() {
 		r.setValue($restService.status.r);
@@ -62,9 +59,11 @@ function StatusCtrl($scope, $restService) {
 
 		slider.on('slide', function(v) {
 			$scope.bl = v;
-			trustServer = false;
-			$restService.setBrightness(v, function() {
-				trustServer = true;
+
+			$scope.queue.push(function(done) {
+				$restService.setBrightness(v, function() {
+					done();
+				});
 			});
 		});
 
@@ -117,20 +116,23 @@ function StatusCtrl($scope, $restService) {
 	});
 
 	function reloop() {
-
-		if (!trustServer) {
-			console.log('Dont trust server');
-			deferred = true;
-		}
-
-		if (!deferred) {
-			rp();
-		}
-
-		deferred = false;
+		rp();
 	}
 
 	$restService.repeat(reloop);
+
+	function queueHandler() {
+		if ($scope.queue.length != 0) {
+			$restService.clearRepeat(reloop);
+			var cb = $scope.queue.pop();
+			cb(function() {
+				queueHandler();
+				$restService.repeat(reloop);
+			});
+		}
+	}
+
+	setInterval(queueHandler, 200);
 
 	$scope.togglelighting = function() {
 		if ($scope.rest.status.on) {
@@ -168,20 +170,18 @@ function StatusCtrl($scope, $restService) {
 		if (rv > 255) { rv = 255; }
 		if (gv > 255) { gv = 255; }
 		if (bv > 255) { bv = 255; }
-		trustServer = false;
-		console.log(rv + ', ' + gv + ', ' + bv);
+
 		lR = rv;
 		lG = gv;
 		lB = bv;
-		$restService.color(rv,gv,bv, function() {
-			$restService.status.r = rv;
-			$restService.status.g = gv;
-			$restService.status.b = bv;
 
-			if (lR === rv && lG === gv && lB === bv) {
-				rp();
-				trustServer = true;
-			}
+		$scope.queue.push(function(done) {		
+			$restService.color(rv,gv,bv, function() {
+				$restService.status.r = rv;
+				$restService.status.g = gv;
+				$restService.status.b = bv;
+				done();
+			});
 		});
 	}
 }

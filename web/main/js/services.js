@@ -69,7 +69,16 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 	}
 
 	rest.repeat = function(cb) {
-		repeatList.push(cb);
+		if (repeatList.indexOf(cb) == -1) {
+			repeatList.push(cb);
+		}
+	}
+
+	rest.clearRepeat = function(cb) {
+		var idx = repeatList.indexOf(cb);
+		if (idx != -1) {
+			repeatList.splice(idx, 1);
+		}
 	}
 
 	rest.countdown = function(cb) {
