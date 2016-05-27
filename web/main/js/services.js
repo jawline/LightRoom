@@ -8,8 +8,6 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 		logs: ""
 	};
 
-	$scope.queue = [];
-
 	rest.armed_text = "";
 	rest.live_text = "Not Live Yet (Making Initial Request)";
 

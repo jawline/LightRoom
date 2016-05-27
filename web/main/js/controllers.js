@@ -12,6 +12,7 @@ function CommandsCtrl($scope, $restService) {
 
 function StatusCtrl($scope, $restService) {
 	$scope.rest = $restService;
+	$scope.queue = [];
 	$scope.api_url = API_URL;
 	$scope.rv = 0;
 	$scope.gv = 0;
