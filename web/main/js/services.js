@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('RestServices', []).factory('$restService', function($http) {
+
 	var rest = {
 		status: {},
 		config: {},
 		logs: ""
 	};
+
+	$scope.queue = [];
 
 	rest.armed_text = "";
 	rest.live_text = "Not Live Yet (Making Initial Request)";

@@ -46,7 +46,6 @@ function StatusCtrl($scope, $restService) {
 		sb();
 	}
 
-
 	$restService.doOnce(function(data) {
 		// Without JQuery
 		var slider = new Slider('#ex1', {
@@ -59,7 +58,6 @@ function StatusCtrl($scope, $restService) {
 
 		slider.on('slide', function(v) {
 			$scope.bl = v;
-
 			$scope.queue.push(function(done) {
 				$restService.setBrightness(v, function() {
 					done();
