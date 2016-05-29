@@ -36,10 +36,12 @@ pub struct Core {
     pub b: usize
 }
 
-fn load_api(config: &Config) -> Box<Prismatik + Send> {
+fn load_api(config: &Config, log: &mut Log) -> Box<Prismatik + Send> {
     if config.use_dummy {
+        log.add(TAG, "Using Dummy API");
         Box::new(Dummy::new())
     } else {
+        log.add(TAG, "Using CoreApi");
         Box::new(CoreApi::new(&config.server_url, &config.api_key).unwrap())
     }
 }
@@ -48,13 +50,14 @@ impl Core {
 
     pub fn new(config_file : &str) -> Core {
         let config = Config::load(config_file);
+        let mut log = Log::new(&format!("{}log{}", LOG_DIR, time::now().to_timespec().sec), config.log_config.log_limit);
         
         let mut core = Core {
             alive: true,
             brightness: 100,
             on: false,
-            prismatik: load_api(&config),
-            log: Log::new(&format!("{}log{}", LOG_DIR, time::now().to_timespec().sec), config.log_config.log_limit),
+            prismatik: load_api(&config, &mut log),
+            log: log,
             config: config,
             r: 0,
             g: 0,
