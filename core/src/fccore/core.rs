@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 
 use fccore::config::Config;
-use std::thread::sleep_ms;
 use simplelog::Log;
 use prismatikapi::*;
 

@@ -8,7 +8,7 @@ use fccore::Core;
 use std::thread;
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
-use hyper::header::{Headers, Header, HeaderFormat, AccessControlAllowOrigin};
+use hyper::header::{Headers, Header, AccessControlAllowOrigin};
 use fcwebserve::config::Config;
 use fcwebserve::core_config::get_config;
 use fcwebserve::status::status_report;
@@ -61,7 +61,7 @@ fn find(name: &str, url: &Url) -> Option<String> {
     let pairs = url.clone().into_generic_url().query_pairs();
 
     if pairs.is_some() {
-        match pairs.unwrap().iter().find(|&&(ref pname, ref val)| name == pname) {
+        match pairs.unwrap().iter().find(|&&(ref pname, _)| name == pname) {
             Some(&(_, ref val)) => Some(val.to_string()),
             _ => None
         }
@@ -85,7 +85,7 @@ fn color(core_ref: &Arc<Mutex<Core>>, req: &Request) -> Response {
 
 fn page_handler(req : &mut Request, core : &Arc<Mutex<Core>>) -> IronResult<Response> {    	
   
-    let full_req_path = req.url.path.iter().fold(String::new(), |curr, next| curr + "/" + next);
+    //let full_req_path = req.url.path.iter().fold(String::new(), |curr, next| curr + "/" + next);
     
     let response = if req.url.path.len() != 0 {
         let base_cmd : &str = &req.url.path[0].clone();
