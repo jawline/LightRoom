@@ -40,12 +40,14 @@ function StatusCtrl($scope, $restService) {
 		$scope.bl = $restService.status.brightness;
 	}
 
-	function rp() {
+	function reloop() {	
 		rebright();
 		sr();
 		sg();
 		sb();
 	}
+
+	$restService.repeat(reloop);
 
 	function queueHandler() {
 		if ($scope.queue.length != 0) {
@@ -60,7 +62,7 @@ function StatusCtrl($scope, $restService) {
 	}
 
 	var locks = 0;
-	var queueInterval = setTimeout(queueHandler, 500);
+	var queueInterval = null;
 
 	function lockQueue() {
 		if (queueInterval) {
@@ -73,16 +75,10 @@ function StatusCtrl($scope, $restService) {
 	function unlockQueue() {
 		locks--;
 		if (locks <= 0) {
-			queueHandler();
+			setTimeout(queueHandler, 500);
 			locks = 0;
 		}
 	}
-
-	function reloop() {
-		rp();
-	}
-
-	$restService.repeat(reloop);
 
 	function changeStart() {
 		console.log('Started Change');
@@ -135,7 +131,6 @@ function StatusCtrl($scope, $restService) {
 		bright.on('slideStop', function(v) {
 			$scope.bl = v;
 			$scope.queue.push(function(done) {
-				console.log('Slid');
 				$restService.setBrightness(v, function() {
 					done();
 				});
@@ -170,7 +165,7 @@ function StatusCtrl($scope, $restService) {
 		$scope.gv = $restService.status.g;
 		$scope.bv = $restService.status.b;
 		setupSliders();
-		rp();
+		reloop();
 	});
 
 	$scope.togglelighting = function() {
