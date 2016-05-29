@@ -48,8 +48,8 @@ function StatusCtrl($scope, $restService) {
 	}
 
 	function queueHandler() {
-		console.log('Queue Handled');
 		if ($scope.queue.length != 0) {
+			console.log('Handling Queue Items');
 			$restService.clearRepeat(reloop);
 			var cb = $scope.queue.pop();
 			cb(function() {
@@ -72,51 +72,37 @@ function StatusCtrl($scope, $restService) {
 
 	function unlockQueue() {
 		locks--;
-		if (locks == 0) {
-			queueInterval = setTimeout(queueHandler, 500);
+		if (locks <= 0) {
+			queueHandler();
+			locks = 0;
 		}
 	}
 
 	function reloop() {
-		console.log('Reloop');
 		rp();
 	}
 
 	$restService.repeat(reloop);
 
+	function changeStart() {
+		console.log('Started Change');
+		$restService.clearRepeat(reloop);
+		lockQueue();
+	}
+
+	function changeStop() {
+		console.log('Stopped Change');
+		unlockQueue();
+	}
+
 	function setupSliders() {
 
-		// Without JQuery
 		bright = new Slider('#ex1', {
 			min: 0,
 			max: 100,
 			formatter: function(value) {
 				return 'Current value: ' + value;
 			}
-		});
-
-		function slideStart() {
-			console.log('Started Sliding');
-			$restService.clearRepeat(reloop);
-			lockQueue();
-		}
-
-		function slideStop() {
-			console.log('Stopped Sliding');
-			unlockQueue();
-		}
-
-		bright.on('slideStart', slideStart);
-		bright.on('slideStop', slideStop);
-
-		bright.on('slideStop', function(v) {
-			$scope.bl = v;
-			$scope.queue.push(function(done) {
-				console.log('Slid');
-				$restService.setBrightness(v, function() {
-					done();
-				});
-			});
 		});
 
 		r = new Slider('#r', {
@@ -143,16 +129,35 @@ function StatusCtrl($scope, $restService) {
 			}
 		});
 
+		bright.on('slideStart', changeStart);
+		bright.on('slideStop', changeStop);
+
+		bright.on('slideStop', function(v) {
+			$scope.bl = v;
+			$scope.queue.push(function(done) {
+				console.log('Slid');
+				$restService.setBrightness(v, function() {
+					done();
+				});
+			});
+		});
+
+		r.on('slideStart', changeStart);
+		r.on('slideStop', changeStop);
 		r.on('slideStop', function(v) {
 			$scope.rv = v;
 			$scope.commit();
 		});
 
+		g.on('slideStart', changeStart);
+		g.on('slideStop', changeStop);
 		g.on('slideStop', function(v) {
 			$scope.gv = v;
 			$scope.commit();
 		});
 
+		b.on('slideStart', changeStart);
+		b.on('slideStop', changeStop);
 		b.on('slideStop', function(v) {
 			$scope.bv = v;
 			$scope.commit();
@@ -177,19 +182,39 @@ function StatusCtrl($scope, $restService) {
 	}
 
 	$scope.white = function() {
-		$restService.white();
+		changeStart();
+		$scope.rv = 255;
+		$scope.bv = 255;
+		$scope.gv = 255;
+		$scope.commit();
+		changeStop();
 	}
 
 	$scope.red = function() {
-		$restService.red();
+		changeStart();
+		$scope.rv = 255;
+		$scope.bv = 0;
+		$scope.gv = 0;
+		$scope.commit();
+		changeStop();
 	}
 
 	$scope.green = function() {
-		$restService.green();
+		changeStart();
+		$scope.rv = 0;
+		$scope.bv = 0;
+		$scope.gv = 255;
+		$scope.commit();
+		changeStop();
 	}
 	
 	$scope.blue = function() {
-		$restService.blue();
+		changeStart();
+		$scope.rv = 0;
+		$scope.bv = 255;
+		$scope.gv = 0;
+		$scope.commit();
+		changeStop();
 	}
 
 	$scope.commit = function() {
