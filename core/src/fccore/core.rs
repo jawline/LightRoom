@@ -20,7 +20,7 @@ pub struct Core {
     pub on: bool,
     pub brightness: usize,
 
-    prismatik: Prismatik,
+    prismatik: CoreApi,
   
     /**
      * configuration for the core
@@ -46,7 +46,7 @@ impl Core {
             alive: true,
             brightness: 100,
             on: false,
-            prismatik: Prismatik::new(&config.server_url, &config.api_key),
+            prismatik: CoreApi::new(&config.server_url, &config.api_key).unwrap(),
             log: Log::new(&format!("{}log{}", LOG_DIR, time::now().to_timespec().sec), config.log_config.log_limit),
             config: config,
             r: 0,
@@ -57,7 +57,7 @@ impl Core {
         core.log.add(TAG, &format!("Connecting to server {} with key {}", &core.config.server_url, &core.config.api_key));
         core.prismatik.set_brightness(75);
         core.prismatik.set_smooth(150);
-        core.prismatik.set_all_lights(0, 0, 0);
+        set_all_lights(&mut core.prismatik, 0, 0, 0);
         core.set_on(false);
         core
     }
@@ -72,7 +72,7 @@ impl Core {
         self.r = r;
         self.g = g;
         self.b = b;
-        self.prismatik.set_all_lights(r,g,b);
+        set_all_lights(&mut self.prismatik, r, g, b);
         self.log.add(TAG, &("Set color to ".to_string() + &r.to_string() + ", " + &g.to_string() + ", " + &b.to_string()));
     }
 
