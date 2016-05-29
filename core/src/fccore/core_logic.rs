@@ -1,6 +1,7 @@
 use fccore::Core;
 use std::sync::{Arc, Mutex};
-use std::thread::{spawn, sleep_ms, JoinHandle};
+use std::thread::{spawn, sleep, JoinHandle};
+use std::time::Duration;
 
 const TAG: &'static str = "fccore_logic";
 
@@ -15,7 +16,7 @@ fn fccore_thread_loop(core_ref: Arc<Mutex<Core>>) {
 
     while core_ref.lock().unwrap().alive {
     	core_ref.lock().unwrap().update();
-    	sleep_ms(25);
+    	sleep(Duration::from_millis(50));
     }
 
     core_ref.lock().unwrap().log_mut().add(TAG, "Core is no longer alive, logic thread exit");

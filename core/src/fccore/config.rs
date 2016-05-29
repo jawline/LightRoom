@@ -12,6 +12,7 @@ pub struct LogConfig {
 pub struct Config {
     pub log_config: LogConfig,
     pub server_url: String,
+    pub use_dummy: bool,
     pub api_key: String
 }
 
