@@ -47,19 +47,72 @@ function StatusCtrl($scope, $restService) {
 		sb();
 	}
 
-	$restService.doOnce(function(data) {
+	function queueHandler() {
+		console.log('Queue Handled');
+		if ($scope.queue.length != 0) {
+			$restService.clearRepeat(reloop);
+			var cb = $scope.queue.pop();
+			cb(function() {
+				queueHandler();
+				$restService.repeat(reloop);
+			});
+		}
+	}
+
+	var locks = 0;
+	var queueInterval = setTimeout(queueHandler, 500);
+
+	function lockQueue() {
+		if (queueInterval) {
+			clearInterval(queueInterval);
+			queueInterval = null;
+		}
+		locks++;
+	}
+
+	function unlockQueue() {
+		locks--;
+		if (locks == 0) {
+			queueInterval = setTimeout(queueHandler, 500);
+		}
+	}
+
+	function reloop() {
+		console.log('Reloop');
+		rp();
+	}
+
+	$restService.repeat(reloop);
+
+	function setupSliders() {
+
 		// Without JQuery
-		var slider = new Slider('#ex1', {
+		bright = new Slider('#ex1', {
 			min: 0,
-			max: 255,
+			max: 100,
 			formatter: function(value) {
 				return 'Current value: ' + value;
 			}
 		});
 
-		slider.on('slide', function(v) {
+		function slideStart() {
+			console.log('Started Sliding');
+			$restService.clearRepeat(reloop);
+			lockQueue();
+		}
+
+		function slideStop() {
+			console.log('Stopped Sliding');
+			unlockQueue();
+		}
+
+		bright.on('slideStart', slideStart);
+		bright.on('slideStop', slideStop);
+
+		bright.on('slideStop', function(v) {
 			$scope.bl = v;
 			$scope.queue.push(function(done) {
+				console.log('Slid');
 				$restService.setBrightness(v, function() {
 					done();
 				});
@@ -90,54 +143,36 @@ function StatusCtrl($scope, $restService) {
 			}
 		});
 
-		r.on('slide', function(v) {
+		r.on('slideStop', function(v) {
 			$scope.rv = v;
 			$scope.commit();
 		});
 
-		g.on('slide', function(v) {
+		g.on('slideStop', function(v) {
 			$scope.gv = v;
 			$scope.commit();
 		});
 
-		b.on('slide', function(v) {
+		b.on('slideStop', function(v) {
 			$scope.bv = v;
 			$scope.commit();
 		});
+	}
 
+	$restService.doOnce(function(data) {
 		$scope.bl = $restService.status.brightness;
 		$scope.rv = $restService.status.r;
 		$scope.gv = $restService.status.g;
 		$scope.bv = $restService.status.b;
-
-		bright = slider;
+		setupSliders();
 		rp();
 	});
 
-	function reloop() {
-		rp();
-	}
-
-	$restService.repeat(reloop);
-
-	function queueHandler() {
-		if ($scope.queue.length != 0) {
-			$restService.clearRepeat(reloop);
-			var cb = $scope.queue.pop();
-			cb(function() {
-				queueHandler();
-				$restService.repeat(reloop);
-			});
-		}
-	}
-
-	setInterval(queueHandler, 200);
-
 	$scope.togglelighting = function() {
 		if ($scope.rest.status.on) {
-			$restService.turn_off();
+			$restService.turn_off(function() {});
 		} else {
-			$restService.turn_on();
+			$restService.turn_on(function() {});
 		}
 	}
 
@@ -157,22 +192,17 @@ function StatusCtrl($scope, $restService) {
 		$restService.blue();
 	}
 
-	var lR, lG, lB;
-
 	$scope.commit = function() {
 		var rv = $scope.rv || 0;
 		var gv = $scope.gv || 0;
 		var bv = $scope.bv || 0;
+
 		if (rv < 0) { rv = 0; }
 		if (gv < 0) { gv = 0; }
 		if (bv < 0) { bv = 0; }
 		if (rv > 255) { rv = 255; }
 		if (gv > 255) { gv = 255; }
 		if (bv > 255) { bv = 255; }
-
-		lR = rv;
-		lG = gv;
-		lB = bv;
 
 		$scope.queue.push(function(done) {		
 			$restService.color(rv,gv,bv, function() {

@@ -1,5 +1,7 @@
 'use strict';
 
+var STATUS_RELOAD_TIME = 250;
+
 angular.module('RestServices', []).factory('$restService', function($http) {
 
 	var rest = {
@@ -14,11 +16,14 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 	var doOnceList = [];
 	var repeatList = [];
 
+	var deferredRepeats = [];
+
 	function reloadStatus() {
 		$http.get(API_URL + "/status").success(function(data) {
 			rest.status = data;
 			rest.live_text = "Live (Updating)";
 			rest.toggle_text = rest.status.on ? "Switch Off" : "Switch On";
+
 			doOnceList.forEach(function(fn) {
 				fn(data);
 			});
@@ -28,13 +33,20 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 			});
 
 			doOnceList.length = 0;
+
+			deferredRepeats.forEach(function (cb) {		
+				if (repeatList.indexOf(cb) == -1) {
+					repeatList.push(cb);
+				}
+			});
+
 		}).then(function() {
-			setTimeout(reloadStatus, 100);
+			setTimeout(reloadStatus, 250);
 		}, function(data) {
 			rest.live_text = "Not Live (Not Updating)";
 			rest.status = {};
 			rest.status.alive = false;
-			setTimeout(reloadStatus, 100);
+			setTimeout(reloadStatus, 250);
 		});
 	}
 
@@ -70,15 +82,18 @@ angular.module('RestServices', []).factory('$restService', function($http) {
 	}
 
 	rest.repeat = function(cb) {
-		if (repeatList.indexOf(cb) == -1) {
-			repeatList.push(cb);
-		}
+		deferredRepeats.push(cb);
 	}
 
 	rest.clearRepeat = function(cb) {
 		var idx = repeatList.indexOf(cb);
 		if (idx != -1) {
 			repeatList.splice(idx, 1);
+		}
+
+		idx = deferredRepeats.indexOf(cb);
+		if (idx != -1) {
+			deferredRepeats.splice(idx, 1);
 		}
 	}
 
