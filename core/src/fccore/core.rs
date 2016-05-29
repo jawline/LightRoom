@@ -42,7 +42,9 @@ fn load_api(config: &Config, log: &mut Log) -> Box<Prismatik + Send> {
         Box::new(Dummy::new())
     } else {
         log.add(TAG, "Using CoreApi");
-        Box::new(CoreApi::new(&config.server_url, &config.api_key).unwrap())
+        let mut prism = CoreApi::new(&config.server_url, &config.api_key).unwrap();
+        prism.lock();
+        Box::new(prism)
     }
 }
 
